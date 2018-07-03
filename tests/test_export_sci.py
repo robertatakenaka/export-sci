@@ -20,6 +20,17 @@ class XMLCitationTests(unittest.TestCase):
 
         self._xmlcitation = export_sci.XMLCitation()
 
+    def test_get_splited_yyyy_mm_dd(self):
+        self.assertEqual(export_sci.get_splited_yyyy_mm_dd('20180230'), None)
+        self.assertEqual(export_sci.get_splited_yyyy_mm_dd('2018-02-30'), None)
+        self.assertEqual(
+            export_sci.get_splited_yyyy_mm_dd('2018-02-28'),
+            ['2018', '02', '28'])
+        self.assertEqual(
+            export_sci.get_splited_yyyy_mm_dd('2018-02'), ['2018', '02'])
+        self.assertEqual(
+            export_sci.get_splited_yyyy_mm_dd('2018'), ['2018'])
+
     def test_xml_citation_setup_pipe(self):
 
         data = [self._citation_meta, None]
