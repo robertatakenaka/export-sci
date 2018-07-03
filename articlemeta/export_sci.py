@@ -1,5 +1,6 @@
 # coding: utf-8
 import re
+from datetime import datetime
 
 from lxml import etree as ET
 
@@ -21,27 +22,23 @@ def create_children(root_node, tags, values):
     return root_node
 
 
-def splited_yyyy_mm_dd(date_iso):
-    if date_iso is not None:
-        parts = date_iso.split('-')
-        if len(parts) == 2:
-            parts.append(None)
-        if len(parts) == 1:
-            parts.append(None)
-            parts.append(None)
-        if len(parts) == 3:
-            return parts
+def get_splited_yyyy_mm_dd(date_iso):
+    for date_format in ['%Y-%m-%d', '%Y-%m', '%Y', ]:
+        try:
+            datetime.strptime(date_iso, date_format)
+            return date_iso.split('-')
+        except ValueError:
+            pass
 
 
 def create_date_elem(element_date_name, splited_yyyy_mm_dd, date_type=None):
     if splited_yyyy_mm_dd is not None:
-        y, m, d = splited_yyyy_mm_dd
+        dd_mm_yyyy = splited_yyyy_mm_dd[::-1]
         elem_date = ET.Element(element_date_name)
         if date_type is not None:
             elem_date.set('date-type', date_type)
-        tags = ['day', 'month', 'year']
-        values = [d, m, y]
-        return create_children(elem_date, tags, values)
+        tags = ['day', 'month', 'year'][:len(dd_mm_yyyy)]
+        return create_children(elem_date, tags, dd_mm_yyyy)
 
 
 class XMLCitation(object):
@@ -215,7 +212,7 @@ class XMLCitation(object):
             if access_date is not None:
                 date_in_citation_elem = create_date_elem(
                     'date-in-citation',
-                    splited_yyyy_mm_dd(access_date),
+                    get_splited_yyyy_mm_dd(access_date),
                     'access-date'
                 )
                 if date_in_citation_elem is not None:
