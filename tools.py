@@ -745,7 +745,7 @@ class DataHandler(object):
         i = 0
         for document in documents:
             i += 1
-            yield [total, i, self_articles_coll.find_one({'collection': document[0], 'code': document[1]}, {'citations': 0})]
+            yield [total, i, self._articles_coll.find_one({'collection': document[0], 'code': document[1]}, {'citations': 0})]
 
     def not_sent_with_proc_date(self, wos_collections_allowed, code_title=None, processing_date=None, publication_year=1800):
         """
@@ -801,4 +801,4 @@ class DataHandler(object):
         i = 0
         for document in documents:
             i += 1
-            yield [total, i, self_articles_coll.find_one({'collection': document[0], 'code': document[1]}, {'citations': 0})]
+            yield [total, i, self._articles_coll.find_one({'collection': document[0], 'code': document[1]}, {'citations': 0})]

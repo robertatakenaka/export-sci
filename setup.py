@@ -15,7 +15,7 @@ with open(os.path.join(here, 'VERSION')) as f:
 requires = [
     'requests>=2.18.1',
     'pymongo>=3.4.0',
-    'lxml>=3.8.0'
+    'lxml>=5.4.0'
 ]
 
 setup(
